@@ -1,0 +1,7 @@
+{
+  "name": "vsf-magento-stripe",
+  "version": "1.0.0",
+  "dependencies": {
+    "@vue-stripe/vue-stripe": "^4.4.4",
+  },
+}
