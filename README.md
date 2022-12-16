@@ -21,9 +21,9 @@ Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront
 ```
 import { StripePaymentsToken } from  '@vsf-magento-stripe/types/types';
 export  interface  PaymentMethodInput {
-	...
-	/** Stripe payments token */
-	stripe_payments?: StripePaymentsToken;
+    ...
+    /** Stripe payments token */
+    stripe_payments?: StripePaymentsToken;
 }
 ```
 
