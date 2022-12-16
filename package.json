@@ -1,7 +1,25 @@
 {
   "name": "vsf-magento-stripe",
   "version": "1.0.0",
+  "description": "Strapi Payment module for Vue Storefront Magento",
+  "main": "index.js",
+  "files": [
+    "stripe/*"
+  ],
   "dependencies": {
     "@vue-stripe/vue-stripe": "^4.4.4",
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlesscommerce/vsf-magento-stripe.git"
+  },
+  "author": "headlesscommerce",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/headlesscommerce/vsf-magento-stripe/issues"
+  },
+  "homepage": "https://github.com/headlesscommerce/vsf-magento-stripe#readme"
 }
