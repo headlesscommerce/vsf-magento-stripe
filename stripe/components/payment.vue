@@ -15,11 +15,14 @@
 <script lang="ts">
   import { ref, defineComponent, onMounted } from '@nuxtjs/composition-api';
   import { SfButton } from '@storefront-ui/vue';
+
+  import { PaymentIntentOptions, StripeEvents } from '../../stripe/types/types';
+  import usePaymentIntent from '../../stripe/composables/usePaymentIntent';
+  import { StripeElementPayment } from '@vue-stripe/vue-stripe';
+
+  // Relies on VSF MAGENTO to be installed
   import usePaymentProvider from '~/modules/checkout/composables/usePaymentProvider';
   import useCart from '~/modules/checkout/composables/useCart';
-  import { PaymentIntentOptions, StripeEvents } from '~/stripe/types/types';
-  import usePaymentIntent from '~/stripe/composables/usePaymentIntent';
-  import { StripeElementPayment } from '@vue-stripe/vue-stripe';
 
   export default defineComponent({
     name: 'Stripe',
