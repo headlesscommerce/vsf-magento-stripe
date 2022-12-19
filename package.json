@@ -1,6 +1,6 @@
 {
   "name": "@headlesscommerce/vsf-magento-stripe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stripe Payment module for Vue Storefront Magento",
   "main": "index.js",
   "files": [
