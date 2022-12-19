@@ -1,13 +1,13 @@
-# Strapi Payment module for Vue Storefront
+# Stripe Payment module for Vue Storefront
 
-Strapi Payments integration using [vue-stripe](https://github.com/vue-stripe/vue-stripe) for Vue Storefront with Magento 2 as backend system.
+Stripe Payments integration using [vue-stripe](https://github.com/vue-stripe/vue-stripe) for Vue Storefront with Magento 2 as backend system.
 
 This module is only for [VSF Magento 2](https://github.com/vuestorefront/magento2) in order to place and order and pay using Stripe.
 
 # Requirements for Magento 2
 On Magento side it's required to extends the official Stripe Magento 2 module with additional GraphQL features. 
 
-In order for this Strapi Payment module to work the [Magento 2 Strapi GraphQL module](https://github.com/headlesscommerce/magento-stripe-graphql) is needed.
+In order for this Stripe Payment module to work the [Magento 2 Stripe GraphQL module](https://github.com/headlesscommerce/magento-stripe-graphql) is needed.
 
 # Integration to theme
 Install the package `npm -i @vsf-magento-stripe` or `yarn add @vsf-magento-stripe`.
