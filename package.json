@@ -16,6 +16,14 @@
     "type": "git",
     "url": "git+https://github.com/headlesscommerce/vsf-magento-stripe.git"
   },
+  "keywords": [
+    "vue",
+    "vuestorefront",
+    "stripe",
+    "magento",
+    "nuxt",
+    "payment"
+  ],
   "author": "headlesscommerce",
   "license": "MIT",
   "bugs": {
