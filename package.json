@@ -1,6 +1,6 @@
 {
   "name": "vsf-magento-stripe",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "Strapi Payment module for Vue Storefront Magento",
   "main": "index.js",
   "files": [
