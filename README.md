@@ -48,21 +48,21 @@ Then access the `triggerStripe` from the `VsfPaymentProvider` component and add 
 
 ```
 <template>
-	<VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />
+    <VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />
 </template>
 <script  lang="ts">
-	export default defineComponent({
-		name: 'ReviewOrderAndPayment',
-		setup() {
-			const VsfPaymentProviderRef = ref(null);
-			const  processOrder = async () => {
-				const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();
-				// Only return if stripe is the only payment method you wish to have
-				if (!stripeStatus) return;
-				...
-			};
-		}
-	});
+    export default defineComponent({
+      name: 'ReviewOrderAndPayment',
+        setup() {
+          const VsfPaymentProviderRef = ref(null);
+          const  processOrder = async () => {
+            const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();
+            // Only return if stripe is the only payment method you wish to have
+            if (!stripeStatus) return;
+            ...
+          };
+        }
+    });
 </script>
 ```
 ### Add Stripe component to VsfPaymentProvider
@@ -70,20 +70,20 @@ In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.c
 
 ```
 <template>
-	 <SfRadio v-for="method in paymentMethods">
-	   <template #details>
-	     <Stripe ref="StripeRef" v-if="method.code === 'stripe_payments'" @status="paymentStatus" />
-	   </template>
-	 </SfRadio>
+    <SfRadio v-for="method in paymentMethods">
+       <template #details>
+         <Stripe ref="StripeRef" v-if="method.code === 'stripe_payments'" @status="paymentStatus" />
+       </template>
+    </SfRadio>
  </template>
  <script lang="ts">
-	export default defineComponent({
-	    name: 'VsfPaymentProvider',
-	    components: {
-	      ...
-	      Stripe: () => import('@vsf-magento-stripe/components/payment.vue')
-	    },
-	 });
+    export default defineComponent({
+      name: 'VsfPaymentProvider',
+        components: {
+        ...
+        Stripe: () => import('@vsf-magento-stripe/components/payment.vue')
+      },
+    });
  </script>
 ```
 
