@@ -23,7 +23,9 @@
     "magento",
     "nuxt",
     "payment",
-    "module"
+    "module",
+    "javascript",
+    "typescript",
   ],
   "author": "headlesscommerce",
   "license": "MIT",
