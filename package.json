@@ -22,7 +22,8 @@
     "stripe",
     "magento",
     "nuxt",
-    "payment"
+    "payment",
+    "module"
   ],
   "author": "headlesscommerce",
   "license": "MIT",
