@@ -17,7 +17,7 @@ Add `STRIPE_PUBLISHABLE_KEY={your key}` to your env. It should start like this: 
 Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/GraphQL/types.ts)) by importing the `StripePaymentsToken` and then **adding** a `stripe_payments?: StripePaymentsToken;` field to the `PaymentMethodInput` interface.
 
 ```
-import { StripePaymentsToken } from  '@vsf-magento-stripe/types/types';
+import { StripePaymentsToken } from '@headlesscommerce/vsf-magento-stripe/stripe/types/types';
 export  interface  PaymentMethodInput {
     ...
     /** Stripe payments token */
@@ -77,11 +77,12 @@ In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.c
     </SfRadio>
  </template>
  <script lang="ts">
+    import { Stripe } from '@headlesscommerce/vsf-magento-stripe';
     export default defineComponent({
       name: 'VsfPaymentProvider',
         components: {
         ...
-        Stripe: () => import('@vsf-magento-stripe/components/payment.vue')
+        Stripe
       },
     });
  </script>
