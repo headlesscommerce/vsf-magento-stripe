@@ -2,18 +2,18 @@
 
 Stripe Payments integration using [vue-stripe](https://github.com/vue-stripe/vue-stripe) for [Vue Storefront with Magento 2](https://github.com/vuestorefront/magento2).
 
-# Requirements for Magento 2
+## Requirements for Magento 2
 On Magento's side its required to extend the official [Stripe Magento 2 module](https://marketplace.magento.com/stripe-stripe-payments.html) with some additional GraphQL features. 
 
 In order for this Stripe Payment module to work the free [Magento 2 Stripe GraphQL module](https://github.com/headlesscommerce/magento-stripe-graphql) is needed.
 
-# Integration to theme
+## Integration to theme
 Install the package `npm -i @headlesscommerce/vsf-magento-stripe` or `yarn add @headlesscommerce/vsf-magento-stripe`.
 
-## Add Stripe Key 
+### Add Stripe Key 
 Add `STRIPE_PUBLISHABLE_KEY={your key}` to your env. It should start like this: `pk_`
 
-## Update VSF GraphQL types
+### Update VSF GraphQL types
 Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/GraphQL/types.ts)) by importing the `StripePaymentsToken` and then **adding** a `stripe_payments?: StripePaymentsToken;` field to the `PaymentMethodInput` interface.
 
 ```
@@ -25,7 +25,7 @@ export  interface  PaymentMethodInput {
 }
 ```
 
-##  Include Stripe.js
+###  Include Stripe.js
 In `modules/checkout/pages/Checkout.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout.vue)) include the [stripe.js](https://stripe.com/docs/js) script in `head`.
 
 ```
@@ -40,7 +40,7 @@ head() {
 }
 ```
 
-## Update processOrder in Checkout/Payment
+### Update processOrder in Checkout/Payment
 In `modules/checkout/pages/Checkout/Payment.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout/Payment.vue)) add a `ref` to the _VsfPaymentProvider_ component e.g:
  `<VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />`
  
