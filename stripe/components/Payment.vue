@@ -57,7 +57,7 @@
         // Get client secret from Magento Stripe module
         const clientSecretResponse = await getClientSecret(cartId);
         elementsOptions.value = { clientSecret: clientSecretResponse };
-        confirmParams.value = { return_url: '/thank-you' };
+        confirmParams.value = { return_url: '/checkout/thank-you' };
         clientSecretStatus.value = true;
       });
 
@@ -71,7 +71,7 @@
           elements,
           redirect: 'if_required',
           confirmParams: {
-            return_url: '/thank-you',
+            return_url: '/checkout/thank-you',
             payment_method_data: {
               billing_details: {
                 "address": {
