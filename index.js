@@ -1,4 +1,4 @@
-import Stripe from "./stripe/components/payment.vue";
+import Stripe from "./stripe/components/Payment.vue";
 
 export {
     Stripe

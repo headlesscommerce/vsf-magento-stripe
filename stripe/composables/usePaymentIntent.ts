@@ -5,29 +5,19 @@ import { Logger } from '~/helpers/logger';
 export const usePaymentIntent = () => {
   const { mutate } = useApi();
 
-  const clientSecret = async (cartId: String) => {
+  const getClientSecret = async (cartId: string) => {
     Logger.debug('usePaymentIntent.clientSecret');
-    let result = null;
+    let result: string = '';
 
-    try {
-      result = mutate(paymentIntentQuery, { input: { cart_id: cartId }})
-      .then((response) => {
-        if (response != null) {
-          return response.data['createPaymentIntent'].clientSecret;
-        } else {
-          Logger.error('usePaymentIntent/clientSecret', 'response is null');
-        }
-      })
-    } catch(error) {
-      Logger.error('usePaymentIntent/clientSecret', error.message);
-    };
+    const createPaymentIntentResponse = await mutate(paymentIntentQuery, { input: { cart_id: cartId }});
+    result = createPaymentIntentResponse?.data['createPaymentIntent']?.clientSecret;
 
     Logger.debug('[Result/usePaymentIntent.clientSecret]:', { result });
     return result;
   }
 
   return {
-    clientSecret
+    getClientSecret
   };
 };
 

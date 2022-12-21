@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-  import { ref, defineComponent, onMounted } from '@nuxtjs/composition-api';
-  import { PaymentIntentOptions, StripeEvents } from '../../stripe/types/types';
-  import usePaymentIntent from '../../stripe/composables/usePaymentIntent';
+  import { ref, defineComponent, onMounted, useContext} from '@nuxtjs/composition-api';
+  import { PaymentIntentOptions, StripeEvents } from '@headlesscommerce/vsf-magento-stripe/stripe/types';
+  import usePaymentIntent from '@headlesscommerce/vsf-magento-stripe/stripe/composables/usePaymentIntent';
   import { StripeElementPayment } from '@vue-stripe/vue-stripe';
 
   // Relies on VSF MAGENTO to be installed
@@ -39,7 +39,7 @@
       const redirect = 'if_required';
       const clientSecretStatus = ref(false);
       const billingDetails = ref(null);
-      const { clientSecret } = usePaymentIntent();
+      const { getClientSecret } = usePaymentIntent();
       const createOptions = {
         "fields": {
           "billingDetails": "never"
@@ -49,17 +49,20 @@
       onMounted(async () => {
         // Load payment methods for later access
         paymentMethods.value = await load();
+
+        // VSF BUG https://github.com/vuestorefront/magento2/issues/1389
         const cartId = cart.value.id;
         if (!cartId) return;
 
-        const clientSecretResponse = await clientSecret(cartId);
+        // Get client secret from Magento Stripe module
+        const clientSecretResponse = await getClientSecret(cartId);
         elementsOptions.value = { clientSecret: clientSecretResponse };
-        confirmParams.value = { return_url: window.location.href };
+        confirmParams.value = { return_url: '/checkout/thank-you' };
         clientSecretStatus.value = true;
       });
 
-      // Get payment method id from vue stripe element then save selected payment method
       const setPaymentMethod = async () => {
+        // Get payment method id from vue stripe element then save selected payment method
         const stripe = paymentRef.value.stripe;
         const elements = paymentRef.value.elements;
 
@@ -68,7 +71,7 @@
           elements,
           redirect: 'if_required',
           confirmParams: {
-            return_url: window.location.href,
+            return_url: '/checkout/thank-you',
             payment_method_data: {
               billing_details: {
                 "address": {
@@ -106,8 +109,8 @@
         }
       }
 
-      // Check if all required fields for the selected payment method in the Payment Element have been filled with potentially valid input
       const validate = () => {
+        // Check if all required fields for the selected payment method in the Payment Element have been filled with potentially valid input
         paymentRef.value.element.on('change', (event: StripeEvents) => {
           if (event.complete) {
             emit('status', event.complete);

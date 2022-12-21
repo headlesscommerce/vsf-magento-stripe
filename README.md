@@ -17,7 +17,7 @@ Add `STRIPE_PUBLISHABLE_KEY={your key}` to your env. It should start like this: 
 Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/GraphQL/types.ts)) by importing the `StripePaymentsToken` and then **adding** a `stripe_payments?: StripePaymentsToken;` field to the `PaymentMethodInput` interface.
 
 ```
-import { StripePaymentsToken } from '@headlesscommerce/vsf-magento-stripe/stripe/types/types';
+import { StripePaymentsToken } from '@headlesscommerce/vsf-magento-stripe/stripe/types';
 export  interface  PaymentMethodInput {
     ...
     /** Stripe payments token */
@@ -50,7 +50,7 @@ Then access the `triggerStripe` from the `VsfPaymentProvider` component and add 
 <template>
     <VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />
 </template>
-<script  lang="ts">
+<script lang="ts">
     export default defineComponent({
       name: 'ReviewOrderAndPayment',
         setup() {
