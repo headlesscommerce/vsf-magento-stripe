@@ -58,7 +58,8 @@ Then access the `triggerStripe` from the `VsfPaymentProvider` component and add 
           const  processOrder = async () => {
             const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();
             // Only return if stripe is the only payment method you wish to have
-            if (!stripeStatus) return;
+            if (!stripeStatus || stripeStatus.message) return;
+            // It's recommended displaying any errors to the user, in this case it's adviced to use SfNotification component
             ...
           };
         }
