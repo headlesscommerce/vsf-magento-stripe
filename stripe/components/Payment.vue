@@ -91,7 +91,7 @@
         });
 
         if (confirmPayment.error) {
-          throw(confirmPayment.error);
+          return confirmPayment.error;
         }
 
         if (confirmPayment.paymentIntent.status === "succeeded") {
