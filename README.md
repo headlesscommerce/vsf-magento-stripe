@@ -11,7 +11,7 @@ In order for this Stripe Payment module to work the free [Magento 2 Stripe Graph
 Install the package `npm -i @headlesscommerce/vsf-magento-stripe` or `yarn add @headlesscommerce/vsf-magento-stripe`.
 
 ### Add Stripe Key 
-Add `STRIPE_PUBLISHABLE_KEY={your key}` to your env. It should start like this: `pk_`
+Use the `apiKey` prop to parse the Stripe publishable key.
 
 ### Update VSF GraphQL types
 Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/GraphQL/types.ts)) by importing the `StripePaymentsToken` and then **adding** a `stripe_payments?: StripePaymentsToken;` field to the `PaymentMethodInput` interface.
