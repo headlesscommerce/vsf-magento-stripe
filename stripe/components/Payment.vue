@@ -28,10 +28,16 @@
       StripeElementPayment
     },
     emits: ['status'],
-    setup(_props, { emit }) {
+    props: {
+      apiKey: {
+        type: String,
+        default: '',
+      },
+    },
+    setup(props, { emit }) {
       const { load, save } = usePaymentProvider();
       const paymentRef = ref(null);
-      const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+      const publishableKey = props.apiKey;
       const paymentMethods = ref(null);
       const { cart } = useCart();
       const elementsOptions = ref<PaymentIntentOptions>();
