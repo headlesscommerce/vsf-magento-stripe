@@ -18,7 +18,7 @@ publicRuntimeConfig: {
 ```
 
 ###  Include Stripe.js
-In `modules/checkout/pages/Checkout.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout.vue)) include the [stripe.js](https://stripe.com/docs/js) script in `head`.
+In `modules/checkout/pages/Checkout.vue`([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/pages/Checkout.vue)) include the [stripe.js](https://stripe.com/docs/js) script in `head`.
 
 ```
 head() {
@@ -33,7 +33,7 @@ head() {
 ```
 
 ### Update processOrder in Checkout/Payment
-In `modules/checkout/pages/Checkout/Payment.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout/Payment.vue)) add a `ref` to the _VsfPaymentProvider_ component e.g:
+In `modules/checkout/pages/Checkout/Payment.vue`([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/pages/Checkout/Payment.vue)) add a `ref` to the _VsfPaymentProvider_ component e.g:
  `<VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />`
  
 Then access the `triggerStripe` from the `VsfPaymentProvider` component and overide the `processOrder` function by removing the `order.value = await make();` with `const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();` and `order.value.order.order_number` with `stripeStatus.order_number`.
@@ -58,7 +58,7 @@ Then access the `triggerStripe` from the `VsfPaymentProvider` component and over
 };
 ```
 ### Add Stripe component to VsfPaymentProvider
-In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) import the Stripe component and override the _details_ slot of `SfRadio` component to add the Stripe component. 
+In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) import the Stripe component and override the _details_ slot of `SfRadio` component to add the Stripe component. 
 
 Example:
 ```
@@ -83,7 +83,7 @@ Example:
 
 
 ### Set useStripe composable
-In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) set a `ref` for the Stripe component then to validate and initiate the Stripe `useStripe` composable.
+In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) set a `ref` for the Stripe component then to validate and initiate the Stripe `useStripe` composable.
 
 ```
 export default defineComponent({
