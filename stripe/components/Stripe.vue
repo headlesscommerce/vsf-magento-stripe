@@ -12,15 +12,6 @@
   export default defineComponent({
     name: 'Stripe',
     emits: ['status'],
-    head() {
-      return {
-        script: [
-          {
-            src: 'https://js.stripe.com/v3'
-          }
-        ],
-      }
-    },
     setup(_props, { emit }) {
       const { app, $config } = useContext();
       const stripe = ref();
