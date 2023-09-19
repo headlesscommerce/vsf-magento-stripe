@@ -1,32 +1,24 @@
 # Stripe Payment Module for Vue Storefront 2
 
-Stripe Payments integration using [vue-stripe](https://github.com/vue-stripe/vue-stripe) for [Vue Storefront with Magento 2](https://github.com/vuestorefront/magento2). Uses the Stripe Payment Element and supports 3D Secure.
+Stripe Payments integration for [Vue Storefront with Magento 2](https://github.com/vuestorefront/magento2). Supports Payment Element and 3D Secure.
 
 ## Requirements for Magento 2
-On Magento's side its required to extend the official [Stripe Magento 2 module](https://marketplace.magento.com/stripe-stripe-payments.html) with some additional GraphQL features. 
-
-In order for this Stripe Payment module to work the free [Magento 2 Stripe GraphQL module](https://github.com/headlesscommerce/magento-stripe-graphql) is needed.
+On Magento's side install the official [Stripe Magento 2 module](https://marketplace.magento.com/stripe-stripe-payments.html). 
 
 ## Integration to theme
 Install the package `npm -i @headlesscommerce/vsf-magento-stripe` or `yarn add @headlesscommerce/vsf-magento-stripe`.
 
 ### Add Stripe Key 
-Use the `apiKey` prop to parse the Stripe publishable key.
-
-### Update VSF GraphQL types
-Override the `modules/GraphQL/types.ts` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/GraphQL/types.ts)) by importing the `StripePaymentsToken` and then **adding** a `stripe_payments?: StripePaymentsToken;` field to the `PaymentMethodInput` interface.
+Add the Stripe publishable key to `nuxt.config.js` in `publicRuntimeConfig`.
 
 ```
-import { StripePaymentsToken } from '@headlesscommerce/vsf-magento-stripe/stripe/types';
-export  interface  PaymentMethodInput {
-    ...
-    /** Stripe payments token */
-    stripe_payments?: StripePaymentsToken;
+publicRuntimeConfig: {
+  stripePublishableKey: process.env.NODE_ENV === 'production' ? 'pk_live' : 'pk_test',
 }
 ```
 
 ###  Include Stripe.js
-In `modules/checkout/pages/Checkout.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout.vue)) include the [stripe.js](https://stripe.com/docs/js) script in `head`.
+In `modules/checkout/pages/Checkout.vue`([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/pages/Checkout.vue)) include the [stripe.js](https://stripe.com/docs/js) script in `head`.
 
 ```
 head() {
@@ -41,34 +33,34 @@ head() {
 ```
 
 ### Update processOrder in Checkout/Payment
-In `modules/checkout/pages/Checkout/Payment.vue`([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/pages/Checkout/Payment.vue)) add a `ref` to the _VsfPaymentProvider_ component e.g:
+In `modules/checkout/pages/Checkout/Payment.vue`([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/pages/Checkout/Payment.vue)) add a `ref` to the _VsfPaymentProvider_ component e.g:
  `<VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />`
  
-Then access the `triggerStripe` from the `VsfPaymentProvider` component and add it to the `processOrder` function.
+Then access the `triggerStripe` from the `VsfPaymentProvider` component and overide the `processOrder` function by removing the `order.value = await make();` with `const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();` and `order.value.order.order_number` with `stripeStatus.order_number`.
 
 ```
-<template>
-    <VsfPaymentProvider  ref="VsfPaymentProviderRef" @status="isPaymentReady = true" />
-</template>
-<script lang="ts">
-    export default defineComponent({
-      name: 'ReviewOrderAndPayment',
-        setup() {
-          const VsfPaymentProviderRef = ref(null);
-          const  processOrder = async () => {
-            const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();
-            // Only return if stripe is the only payment method you wish to have
-            if (!stripeStatus || stripeStatus.message) return;
-            // It's recommended displaying any errors to the user, in this case it's adviced to use SfNotification component
-            ...
-          };
-        }
-    });
-</script>
+  const processOrder = async () => {
+  const stripeStatus = await VsfPaymentProviderRef.value.triggerStripe();
+  if (!stripeStatus) {
+    return;
+  }
+  setCart(null);
+  app.$vsf.$magento.config.state.removeCartId();
+  await load();
+  await removeItem('checkout');
+  const thankYouRoute = app.localeRoute({
+    name: 'thank-you',
+    query: {
+      order: stripeStatus.order_number,
+    },
+  });
+  await router.push(thankYouRoute);
+};
 ```
 ### Add Stripe component to VsfPaymentProvider
-In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/components/VsfPaymentProvider.vue))  import the Stripe component and override the _details_ slot of `SfRadio` component to add the Stripe component. 
+In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) import the Stripe component and override the _details_ slot of `SfRadio` component to add the Stripe component. 
 
+Example:
 ```
 <template>
     <SfRadio v-for="method in paymentMethods">
@@ -90,8 +82,8 @@ In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.c
 ```
 
 
-### Set Stripe as payment method 
-In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/template-magento/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) set a `ref` for the Stripe component then to validate and initiate the Stripe `setPaymentMethod` function.
+### Set useStripe composable
+In `modules/checkout/components/VsfPaymentProvider.vue` ([file](https://github.com/vuestorefront/storefront-nuxt2-magento2/blob/main/modules/checkout/components/VsfPaymentProvider.vue)) set a `ref` for the Stripe component then to validate and initiate the Stripe `useStripe` composable.
 
 ```
 export default defineComponent({
@@ -104,18 +96,17 @@ export default defineComponent({
         // Avoid emitting just yet, see paymentStatus function
         emit('status', paymentMethodCode);
       }
-      
-      // Validate and initiate stripe setPaymentMethod function
-      const triggerStripe = () => {
-        if (selectedPaymentMethodCode.value == 'stripe_payments') {
-          return StripeRef.value[0].setPaymentMethod();
-        } else {
-          return;
-        }
+    };
+    // Validate and initiate stripe
+    const triggerStripe = async () => {
+      if (selectedPaymentMethodCode.value == 'stripe_payments') {
+        return await StripeRef.value[0].useStripe();
+      } else {
+        return;
       }
-      const paymentStatus = () => {
-        emit('status', 'true');
-      };
+    }
+    const paymentStatus = () => {
+      emit('status', 'true');
     };
     return {
       ...
@@ -124,5 +115,6 @@ export default defineComponent({
       StripeRef
     };
   },
+});
 ```
 
