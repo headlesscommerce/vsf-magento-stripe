@@ -1,9 +1,9 @@
 # Stripe Payment Module for Vue Storefront 2
 
-Stripe Payments integration for [Vue Storefront with Magento 2](https://github.com/vuestorefront/magento2). Supports 3D Secure.
+Stripe Payments integration for [Vue Storefront with Magento 2](https://github.com/vuestorefront/magento2). Supports Payment Element and 3D Secure.
 
 ## Requirements for Magento 2
-On Magento's side its required to extend the official [Stripe Magento 2 module](https://marketplace.magento.com/stripe-stripe-payments.html) with some additional GraphQL features. 
+On Magento's side install the official [Stripe Magento 2 module](https://marketplace.magento.com/stripe-stripe-payments.html). 
 
 ## Integration to theme
 Install the package `npm -i @headlesscommerce/vsf-magento-stripe` or `yarn add @headlesscommerce/vsf-magento-stripe`.
